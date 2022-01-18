@@ -1,0 +1,60 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.1'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'war'
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	
+	// https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
+	implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.2.0'
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.25'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.5.1'
+	    // https://mvnrepository.com/artifact/javax.servlet/jstl
+	implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
+	// https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1
+	implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
+	// https://mvnrepository.com/artifact/taglibs/standard
+	implementation group: 'taglibs', name: 'standard', version: '1.1.2'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
+	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.5.1'
+	// https://mvnrepository.com/artifact/org.junit.vintage/junit-vintage-engine
+	testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.2'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.5.1', ext: 'pom'
+    
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	providedRuntime('org.apache.tomcat.embed:tomcat-embed-jasper')
+	
+}
+
+
+
+test {
+	useJUnitPlatform()
+}

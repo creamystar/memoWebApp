@@ -1,0 +1,330 @@
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="./js/web_AP_Function.js"></script>
+<!-- <script type="text/javascript" src="./js/stopwatch.js"></script> -->
+<link href="testpagecss/index/MobileView.css" rel="stylesheet" type="text/css">
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>RecSeeM test</title>
+
+</head>
+
+<body>
+
+	<div class="RecSccM_wrap">
+		<div class="RecSccM_headr">
+
+			<p>RecSeeM TEST</p>
+		</div>
+		<div class="RecSccM_body">
+
+			<div class="RecSccM_index">
+				<p class="RecSccM_index_txt">TEST List</p>
+
+				<div class="bar">
+					<div id="popup_calling_bar2" hidden>
+						<div>
+							<img id="" class="Vector" src="img/index/Vector.png" onclick="">
+						</div>
+						<div class="calltypet">
+							소프트폰
+						</div>
+						<div>
+							<img id="" class="Stick3" src="img/index/Stick.png" onclick="">
+						</div>
+						<div class="clientt">
+							성정들님
+						</div>
+						<div class="">
+							<img id="" class="calling_in" src="img/index/calling_in.png" onclick="">
+						</div>
+						<span id="time" class="calling_time"> 연결중.. </span>
+						<div>
+							<img id="" class="Stick4" src="img/index/Stick.png" onclick="">
+						</div>
+						<div>
+							<img id="" class="call_soundi" src="img/index/btn_call_sound.png" onclick="">
+						</div>
+						<div>
+							<img id="" class="call_mutei" src="img/index/btn_call_mute.png" onclick="">
+						</div>
+						<div>
+							<img id="" class="call_endi" src="img/index/btn_call_end.png" onclick="RecSeeM_DropCall(document.getElementById('agentId').value,'endCall')">
+						</div>
+					</div>
+
+				</div>
+				<div class="bar">
+					<h2>버튼이미지 필요한 버튼</h2>
+					<table style="height: 300px;">
+						<tr>
+							<img id="btnSend1" class="btnSend" src="img/index/CallRecordingimg.png" 
+								onclick="RecSeeM_MakeCall(
+									document.getElementById('agentId').value,
+									document.getElementById('dialNum').value,
+									cust_lv,
+									document.getElementById('custId').value)">
+						</tr>
+						<tr>
+							<!-- <td><input class="butimg" onclick="" value="전화녹취 ->" type="button"></td> -->
+							<td><input class="butimg" onclick="RecSeeM_MakeCall2()" value="( 전용전화" type="button"></td>
+							<td><input class="butimg" onclick="RecSeeM_MakeCall()" value="휴대전화 ) ->" type="button"></td>
+							<td><input class="butimg" onclick="RecSeeM_RecordingPause(document.getElementById('agentId').value)" value="( 일시정지" type="button"></td>
+							<td><input class="butimg" onclick="RecSeeM_RecordingRestart(document.getElementById('agentId').value)" value="재시작" type="button"></td>
+							<td><input class="butimg" onclick="RecSeeM_DropCall(document.getElementById('agentId').value,'endCall')" value="종료 )" type="button"></td>
+						</tr>
+						<tr>
+							<td><input class="butimg" onclick="" value="발신결과 ->" type="button"></td>
+							<td><input class="butimg" onclick="" value="청취 ->" type="button"></td>
+							<td><input class="butimg" onclick="" value="플레이어바" type="button"></td>
+						</tr>
+						<tr>
+							<td><input class="butimg" onclick="RecSeeM_InteractiveVoiceResponse()" value="ARS동의 ->"
+									type="button"></td>
+							<td><input class="butimg" onclick="" value="IVR(마케팅)" type="button"></td>
+							<td><input class="butimg" onclick="" value="IVR(가설동의)" type="button"></td>
+						</tr>
+						<tr>
+							<td><input class="butimg" onclick="" value="대면녹취 ->" type="button"></td>
+							<td><input class="butimg" onclick="RecSeeM_RecordingStart()" value="( O(녹음시작)"
+									type="button"></td>
+							<td><input class="butimg" onclick="RecSeeM_RecordingPause()" value="일시정지" type="button">
+							</td>
+							<td><input class="butimg" onclick="RecSeeM_RecordingRestart()" value="재시작" type="button">
+							</td>
+							<td><input class="butimg" onclick="RecSeeM_RecordingTermination()" value="종료 )"
+									type="button"></td>
+						</tr>
+
+					</table>
+
+				</div>
+
+				<div class="bar">
+					<h2>로그인 / 로그아웃</h2>
+					<table class="infobox">
+
+						<tr>
+							<td class="key">agentId :</td>
+							<td><input type="text" id="agentId"></td>
+						</tr>
+						<tr>
+							<td class="key">password :</td>
+							<td><input type="text" id="password"></td>
+						</tr>
+						<tr>
+							<td class="key">phone :</td>
+							<td><input type="text" id="phone"></td>
+						</tr>
+					</table>
+					<br>
+					<table>
+						<tr>
+							<td><input type="button" value="로그인" id="btnLogin"
+								onclick="RecSeeM_Login(document.getElementById('agentId').value,document.getElementById('password').value,document.getElementById('phone').value)">
+								<input type="button" value="로그아웃" id="btnLogout"
+								onclick="RecSeeM_Logout(document.getElementById('agentId').value,document.getElementById('phone').value)"
+								disabled="disabled"></td>
+						</tr>
+					</table>
+
+				</div>
+
+
+				<div class="bar">
+					<h2>전화걸기 1 (모바일폰)</h2>
+
+					<table class="infobox">
+						<tr>
+							<td class="key">Dial Number1 :</td>
+							<td><input type="text" id="dialNum"></td>
+						</tr>
+						<tr>
+							<td class="key">Cust Id :</td>
+							<td><input type="text" id="custId"></td>
+						</tr>
+						<tr>
+							<td class="key">cust_lv :</td>
+							<td><input type="text" id="cust_lv"></td>
+						</tr>
+						<tr>
+							<td class="key">Info1 :</td>
+							<td><input type="text" id="info_1"></td>
+						</tr>
+					</table>
+					<br>
+					<table>
+						<tr>
+							<td><img id="btnSend" class="btnSend" src="img/index/CallRecordingimg.png" onclick="RecSeeM_MakeCall(
+								 document.getElementById('agentId').value,
+								 document.getElementById('dialNum').value,
+								 'cust_lv',
+								 document.getElementById('custId').value)">
+							</td>
+
+						</tr>
+					</table>
+
+				</div>
+
+				<div id="Callbar" hidden>
+
+					<div class="pouppbar" id="calltype" style="float: left; margin-right: 1px"></div>
+					<div class="pouppbar" style="float: left;">|</div>
+					<div class="pouppbar" id="nackName" style="float: left;"></div>
+					<div class="pouppbar" style="float: left;">김영빈님 |</div>
+					<div class="pouppbar" id="time" style="float: left;">
+						00:00:00</div>
+					<div class="pouppbar" style="float: left;">
+						<button id="pausebtn">일시정지</button>
+					</div>
+					<div class="pouppbar" style="float: left;">
+						<button id="endCall" onclick="RecSeeM_DropCall()">종료</button>
+					</div>
+
+				</div>
+
+
+				
+
+				<div class="barlo">
+					<h2>전화걸기 2 (소프트폰)</h2>
+					<table class="infobox">
+						<tr>
+							<td class="key">Dial Number2 :</td>
+							<td><input type="text" id="dialNum2" /></td>
+						</tr>
+						<tr>
+							<td class="key">Cust Id :</td>
+							<td><input type="text" id="custId2" /></td>
+						</tr>
+						<tr>
+							<td class="key">calltype :</td>
+							<td><input type="text" id="calltype" /></td>
+						</tr>
+						<tr>
+							<td class="key">pbxProtocol :</td>
+							<td><input type="text" id="pbxProtocol" /></td>
+						</tr>
+						<tr>
+							<td class="key">pbxIP :</td>
+							<td><input type="text" id="pbxIP" /></td>
+						</tr>
+						<tr>
+							<td class="key">pbxPort :</td>
+							<td><input type="text" id="pbxPort" /></td>
+						</tr>
+						<tr>
+							<td class="key">pbxId :</td>
+							<td><input type="text" id="pbxId" /></td>
+						</tr>
+						<tr>
+							<td class="key">pbxPw :</td>
+							<td><input type="text" id="pbxPw" /></td>
+						</tr>
+						<tr>
+							<td class="key">Info1 :</td>
+							<td><input type="text" id="info_11" /></td>
+						</tr>
+					</table>
+					<br>
+					<table>
+						<tr>
+							<td><img id="btnSend2" class="btnSend" src="img/index/CallRecordingimg.png" onclick="RecSeeM_MakeCall2(
+									 document.getElementById('agentId').value,
+									 document.getElementById('dialNum2').value,
+									 'cust_lv2',
+									 document.getElementById('custId2').value,
+									 document.getElementById('calltype').value,
+									 document.getElementById('pbxProtocol').value,
+									 document.getElementById('pbxIP').value,
+									 document.getElementById('pbxPort').value,
+									 document.getElementById('pbxId').value,
+									 document.getElementById('pbxPw').value)">
+
+							</td>
+						</tr>
+					</table>
+
+				</div>
+
+				<div class="bar">
+					<h2>호전환</h2>
+					<table class="infobox">
+						<tr>
+							<td class="key">caller :</td>
+							<td><input type="text" id="caller" /></td>
+						</tr>
+						<tr>
+							<td class="key">excaller :</td>
+							<td><input type="text" id="excaller" /></td>
+						</tr>
+					</table>
+					<br>
+					<table>
+						<tr>
+							<td><input type="button" value="전환" id="CallTransfer" onclick="RecSeeM_CallTransfer(
+				document.getElementById('agentId').value,
+				document.getElementById('caller').value,
+				document.getElementById('excaller').value)"></td>
+							<td><input type="button" value="복귀" id="CallBack" onclick="RecSeeM_CallBack(
+				document.getElementById('agentId').value,
+				document.getElementById('caller').value,
+				document.getElementById('excaller').value)"></td>
+						</tr>
+					</table>
+
+				</div>
+				<div class="bar">
+					<h2>3자통화</h2>
+					<table class="infobox">
+						<tr>
+							<td class="key">caller :</td>
+							<td><input type="text" id="caller" /></td>
+						</tr>
+						<tr>
+							<td class="key">excaller :</td>
+							<td><input type="text" id="excaller" /></td>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<td><input type="button" value="3자 통화" id="callthree" onclick="RecSeeM_CallThreeWay(
+				document.getElementById('agentId').value,
+				document.getElementById('caller').value,
+				document.getElementById('excaller').value)"></td>
+							<td><input type="button" value="3자 통화 종료" id="callthree" onclick=""></td>
+						</tr>
+					</table>
+
+				</div>
+				<div class="bar">
+					<h2>녹취</h2>
+					<table class="infobox">
+						<tr>
+							<td><input type="button" value="버튼녹취 시작" id="transfer" onclick=""></td>
+							<td><input type="button" value="버튼녹취 일시정지" id="transback" onclick=""></td>
+						</tr>
+						<tr>
+							<td><input type="button" value="버튼녹취 재시작" id="callthree" onclick=""></td>
+							<td><input type="button" value="버튼녹취 종료" id="callthree" onclick=""></td>
+						</tr>
+					</table>
+				</div>
+				<div class="bar">
+					<div id="Msgbar">
+						<h2>Result</h2>
+						<textarea cols="50" rows="10" id="MsgOutput"></textarea>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

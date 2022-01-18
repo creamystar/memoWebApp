@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo3.dao.TestMapper">
+
+	<!-- 조회 -->
+	<select id="getList" resultType="hashmap">
+		select user_no,user_id, case when user_pw != '' then 'O' else 'X' end as user_pw, user_contact, user_name
+		from cs_user
+		where del_yn = 0
+		order by user_no desc;
+	</select>
+
+	<!-- 수정값 조회 -->
+	<select id="getOneList" parameterType="Integer" resultType="hashmap">
+		select user_no, user_id, user_pw, user_contact, user_name
+		from cs_user
+		where del_yn = 0 and user_no = #{checkNo}
+	</select>
+
+	<!-- 삭제(del_yn -> 1) -->
+	<update id="delete" parameterType="hashmap">
+		update cs_user set del_yn = 1
+		where user_no in 
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+		 #{item}::integer
+		</foreach>
+	</update>
+	
+	<!-- 수정 -->
+	<update id="updateUser" parameterType="hashmap">
+		update cs_user set user_id=#{userId}, user_pw=#{userPw},user_contact=#{userContact}, user_name=#{userName}
+		where user_no = #{userNo}::integer
+	</update>
+	
+	<!-- 중복 아이디 체크 -->
+	<select id="sameIdCntCheck" parameterType="hashmap" resultType="Integer">
+		select count(*)
+		from cs_user
+		where user_id = #{checkId} and del_yn = 0
+	</select>
+	
+	<!-- 추가 -->
+	<insert id="insertUser" parameterType="hashmap">
+		insert into cs_user(user_no,user_id,user_pw,user_contact,user_name)
+		values(nextval('board_seq'),#{userId},#{userPw},#{userContact},#{userName})
+	</insert>
+
+	<!-- 게시판 총개수(페이징 위해 필요) -->
+	<select id="getListCnt" resultType="Integer">
+		select count(*)
+		from cs_user
+		where del_yn = 0
+	</select>
+
+	<!-- 페이징 게시판 리스트 -->
+	<select id="getPagingList" parameterType="hashmap" resultType="hashmap">
+		select rnum, user_no, user_id, user_pw, user_contact, user_name
+		from (select row_number() over(order by user_no desc) as rnum, user_no,user_id, case when user_pw != '' then 'O' else 'X' end as user_pw, user_contact, user_name
+			from cs_user
+			where del_yn = 0) r
+		where rnum between #{start}::integer and #{end}::integer
+	</select>
+
+	<!-- 페이징 게시판 리스트 다른방식 -->
+	<select id="getPagingList2" parameterType="hashmap" resultType="hashmap">
+		select user_no,user_id, case when user_pw != '' then 'O' else 'X' end as user_pw, user_contact, user_name
+		from cs_user
+		where del_yn = 0
+		order by user_no desc
+		limit #{limit}::integer offset #{offset}::integer <!-- limit 한번에 보여줄 글 수 offset 보여주기 시작할 번호 - 1  -->
+	</select>
+	
+	
+
+</mapper>
