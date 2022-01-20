@@ -5,16 +5,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>main</title>
+<!-- <meta charset="UTF-8">
+<title>main</title> 
 <script type="text/javascript">
-</script>
+</script> -->
 </head>
 <body>
 
-<div class="header">
-	<div>main</div>
-	<div>main2</div>
+<div class="left inlineBlock">
+	<div id="leftMemo">memo</div>
+	<div id="leftTypingGame">typing game</div>
 </div>
 
 </body>
