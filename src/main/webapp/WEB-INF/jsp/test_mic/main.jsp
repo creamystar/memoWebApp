@@ -16,10 +16,10 @@
 <body>
 
 <div class="wrap">
-	 <%@ include file="/WEB-INF/jsp/test_mic/header.jsp" %>
-	 <%@ include file="/WEB-INF/jsp/test_mic/left.jsp" %>
-	<div class="right">
-		main
+	 <%@ include file="/WEB-INF/jsp/test_mic/settings/header.jsp" %>
+	 <%@ include file="/WEB-INF/jsp/test_mic/settings/left.jsp" %>
+	<div class="right inlineBlock">
+		원하는 메뉴를 선택하세요!
 	</div>
 </div>
 

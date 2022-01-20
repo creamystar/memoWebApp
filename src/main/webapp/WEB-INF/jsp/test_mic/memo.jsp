@@ -16,10 +16,30 @@
 <body>
 
 <div class="wrap">
-	 <%@ include file="/WEB-INF/jsp/test_mic/header.jsp" %>
-	 <%@ include file="/WEB-INF/jsp/test_mic/left.jsp" %>
-	<div class="right">
-		memo
+	 <%@ include file="/WEB-INF/jsp/test_mic/settings/header.jsp" %>
+	 <%@ include file="/WEB-INF/jsp/test_mic/settings/left.jsp" %>
+	<div class="right inlineBlock">
+		
+		<div class="memo-small memo-new">
+            <div>
+                <button>추가</button>
+            </div>
+            <div class="memo-con">
+                <textarea class="memo-textarea" placeholder="메모빠른입력"></textarea>
+            </div>
+        </div>
+        <div class="memo-small" id="0">
+            <div>
+                <div><!-- list.wrt_dt.replace("T"," ").replace(".000Z","") --></div>
+                <button id="memo-delete">삭제</button>
+            </div>
+            <div class="memo-con">
+	        <!-- list.cntnt -->
+            <textarea class="memo-textarea" placeholder="메모빠른입력">
+            </textarea>
+            </div>
+        </div>
+		
 	</div>
 </div>
 

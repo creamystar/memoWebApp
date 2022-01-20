@@ -31,10 +31,65 @@ body{
 	border-right: 1px solid rgba(100,200,200);
 	text-align: center;
 }
+.left div:first-child{
+	padding-top: 20px;
+}
+.left div:hover{
+	background-color: rgba(100,200,200,0.3)
+}
 .left div{
-	
+	cursor: pointer;
+	padding: 14px 0;
 }
 .right{
-	width: calc(100vw - 200px);
-	height: calc(100vh - 50px);	
+	width: calc(100vw - 250px);
+	height: calc(100vh - 90px); 
+	padding: 20px;
+}
+.inlineBlock{
+	vertical-align: top;
+	display: inline-block;
+}
+.memo-small {
+    display: inline-block;
+    vertical-align: top;
+    width: 200px;
+    height: 250px;
+    background-color: rgba(250,240,200);
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    position: relative;
+}
+.memo-small > div:first-child{
+    font-size: 6pt;
+    text-align: right;
+}
+.memo-small > div:first-child > div{
+    display: inline-block;
+    float: left;
+    padding-top: 3px;
+}
+.memo-textarea{
+    border: 0;
+    outline: 0;
+    font-size: 9.5pt;
+    background-color: rgba(250,240,200);
+    width: 180px;
+    height: 210px;
+    padding: 8px;
+    resize: none;
+    letter-spacing: 0.1px;
+   	border: 1px solid white; /* 추후삭제 */
+}
+button:hover{
+    background-color: rgba(200,200,200);
+}
+button{
+    outline: 0;
+    border: 0;
+    background-color: rgba(220,220,210);
+    border-radius: 3px;
+    padding: 3px 7px;
+    margin-left: 5px;
 }

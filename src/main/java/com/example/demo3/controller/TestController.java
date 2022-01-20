@@ -65,34 +65,6 @@ public class TestController {
 	}
 	
 
-	@RequestMapping(value="/getPagingListAjax", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String getPagingListAjax(@RequestParam HashMap<String,String> params) throws Throwable {
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		try {
-			int maxCnt = iTestService.getListCnt();
-			int limit = 5; // 한 페이지에 볼 글 수 
-			int pageCnt = 3; // 한 번에 볼 페이지 수 (ex) 3: 1-3페이지 / 4-6페이지 / 7-9페이지) 
-			
-			PagingBean pb = iPagingService.getPagingBean(Integer.parseInt(params.get("currentPage")), maxCnt, limit, pageCnt);
-			
-			params.put("limit", Integer.toString(limit));
-			params.put("offset", Integer.toString(pb.getOffset()));
-	
-			List<HashMap<String,String>> list = iTestService.getPagingList2(params);
-			
-			modelMap.put("list",list);
-			modelMap.put("pb",pb);
-			modelMap.put("result", "success");
-		} catch (Throwable e) {
-			e.printStackTrace();
-			modelMap.put("result", "exception");
-		}
-		return mapper.writeValueAsString(modelMap);
-	}
-	
-	
 	@RequestMapping(value="/deleteAjax", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String deleteAjax(@RequestParam(value="checkList[]") List<String> delList, HttpSession session, HttpServletRequest request) throws Throwable {
@@ -107,41 +79,8 @@ public class TestController {
 		}
 		return mapper.writeValueAsString(modelMap);
 	}//deleteAjax
-
-	@RequestMapping(value="/idCheckAjax", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String idCheckAjax(@RequestParam HashMap<String,String> params) throws Throwable {
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		try {
-			String checkId = params.get("checkId");
-			int sameIdCnt = iTestService.sameIdCntCheck(checkId);
-			modelMap.put("sameIdCnt", sameIdCnt);
-			modelMap.put("result", "success");
-		} catch (Throwable e) {
-			e.printStackTrace();
-			modelMap.put("result", "exception");
-		}
-		return mapper.writeValueAsString(modelMap);
-	}
 	
-	@RequestMapping(value="/inserAjax", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String inserAjax(@RequestParam HashMap<String,String> params) throws Throwable {
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		try {
-			iTestService.insertUser(params);
-			modelMap.put("result", "success");
-		} catch (Throwable e) {
-			e.printStackTrace();
-			modelMap.put("result", "exception");
-		}
-		return mapper.writeValueAsString(modelMap);
-	}
-	
-	
-	@RequestMapping(value="/getOneUserInfoAjax", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@RequestMapping(value="/searchListAjax", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String getOneUserInfoAjax(@RequestParam(value="checkNo") int checkNo) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
@@ -170,6 +109,33 @@ public class TestController {
 			modelMap.put("result", "exception"); 
 		} 
 		return mapper.writeValueAsString(modelMap); 
+	}
+	
+	@RequestMapping(value="/getPagingListAjax", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String getPagingListAjax(@RequestParam HashMap<String,String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		try {
+			int maxCnt = iTestService.getListCnt();
+			int limit = 5; // 한 페이지에 볼 글 수 
+			int pageCnt = 3; // 한 번에 볼 페이지 수 (ex) 3: 1-3페이지 / 4-6페이지 / 7-9페이지) 
+			
+			PagingBean pb = iPagingService.getPagingBean(Integer.parseInt(params.get("currentPage")), maxCnt, limit, pageCnt);
+			
+			params.put("limit", Integer.toString(limit));
+			params.put("offset", Integer.toString(pb.getOffset()));
+	
+			List<HashMap<String,String>> list = iTestService.getPagingList2(params);
+			
+			modelMap.put("list",list);
+			modelMap.put("pb",pb);
+			modelMap.put("result", "success");
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("result", "exception");
+		}
+		return mapper.writeValueAsString(modelMap);
 	}
 	
 	
