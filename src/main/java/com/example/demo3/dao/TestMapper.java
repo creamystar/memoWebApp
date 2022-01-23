@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface TestMapper {
 
-	public List<HashMap<String, String>> getList() throws Throwable;
+	public List<HashMap<String, String>> getList(HashMap<String,String> params) throws Throwable;
 
 	public int delete(List<String> delList) throws Throwable;
 
@@ -17,7 +17,7 @@ public interface TestMapper {
 
 	public void insertUser(HashMap<String, String> params) throws Throwable ;
 
-	public HashMap<String, String> getOneList(int checkNo) throws Throwable ;
+	public List<HashMap<String,String>> getSearchList(HashMap<String, String> params) throws Throwable ;
 
 	public void updateUser(HashMap<String, String> params) throws Throwable ;
 

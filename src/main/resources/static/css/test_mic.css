@@ -45,6 +45,30 @@ body{
 	width: calc(100vw - 250px);
 	height: calc(100vh - 90px); 
 	padding: 20px;
+	overflow: auto;
+}
+.memo-header{
+	width: 100%;
+	height: 30px;
+	padding: 20px;
+	position: relative;
+	top: -20px;
+	left: -20px;
+	padding-bottom: 0;
+}
+input{
+	outline: 0;
+}
+.memo-checkbox{
+	display: none;
+	vertical-align:top;
+	float: left;
+}
+#memo-search{
+	margin-left: 10px;
+}
+#memo-select-delete{
+	margin-left: 6px;
 }
 .inlineBlock{
 	vertical-align: top;
@@ -60,6 +84,16 @@ body{
     margin-bottom: 20px;
     padding: 10px;
     position: relative;
+}
+.memo-small > div:first-child > div:first-child{
+	padding-top: 5px;
+	padding-left: 7px;
+	overflow:hidden;
+	width:105px;
+	height: 15px;
+	text-align: left;
+	font-size: 8pt;
+	vertical-align:top;
 }
 .memo-small > div:first-child{
     font-size: 6pt;
@@ -80,16 +114,23 @@ body{
     padding: 8px;
     resize: none;
     letter-spacing: 0.1px;
-   	border: 1px solid white; /* 추후삭제 */
 }
 button:hover{
     background-color: rgba(200,200,200);
 }
 button{
+	cursor: pointer;
     outline: 0;
     border: 0;
     background-color: rgba(220,220,210);
     border-radius: 3px;
     padding: 3px 7px;
     margin-left: 5px;
+}
+#memo-order{
+	outline: 0;
+	width: 100px;
+	height: 23px;
+	margin-left: 7px;
+	float: right;
 }

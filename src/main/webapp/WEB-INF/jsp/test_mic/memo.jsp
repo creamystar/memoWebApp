@@ -19,29 +19,48 @@
 	 <%@ include file="/WEB-INF/jsp/test_mic/settings/header.jsp" %>
 	 <%@ include file="/WEB-INF/jsp/test_mic/settings/left.jsp" %>
 	<div class="right inlineBlock">
-		
-		<div class="memo-small memo-new">
+		<div class="memo-header">
+			<!-- <input type="text" id="memo-search-input"/><button id="memo-search">검색</button>
+			<button id="memo-select-delete">다중삭제</button> 
+			<select id="memo-order">
+				<option value="wrtDt">최신작성순</option>
+				<option value="updtDt">최신수정순</option>
+				<option value="memo">가나다순</option>
+			</select> -->
+			<input type="text" id="memo-search-input"/><button id="memo-search">검색</button>
+			<button id="memo-select-delete">다중삭제</button>
+			<select id="memo-order">
+				<option value="wrtDt">최신작성순</option>
+				<option value="updtDt">최신수정순</option>
+				<option value="memo">가나다순</option>
+			</select>
+		</div>
+		<div class="memo-right">
+		<!-- <div class=\"memo-small memo-new\">
             <div>
-                <button>추가</button>
+                <button id=\"memo-insert\">추가</button>
             </div>
-            <div class="memo-con">
-                <textarea class="memo-textarea" placeholder="메모빠른입력"></textarea>
+            <div class=\"memo-con\">
+                <textarea class=\"memo-textarea\" placeholder=\"메모빠른입력\"></textarea>
             </div>
-        </div>
-        <div class="memo-small" id="0">
+        </div> -->
+        <!-- <div class=\"memo-small\">
             <div>
-                <div><!-- list.wrt_dt.replace("T"," ").replace(".000Z","") --></div>
-                <button id="memo-delete">삭제</button>
+            	<input type=\"checkbox\" class=\"memo-checkbox\"/>
+                <div class=\"memo-wrtDt\">list[i].wrt_dt</div>
+                <button id=\"memo-update\">수정</button>
+                <button id=\"memo-delete\">삭제</button>
             </div>
-            <div class="memo-con">
-	        <!-- list.cntnt -->
-            <textarea class="memo-textarea" placeholder="메모빠른입력">
-            </textarea>
+            <div class=\"memo-con\">
+            	<textarea class=\"memo-textarea\">list[i].cntnt</textarea>
             </div>
-        </div>
-		
+        </div> -->
+       </div>
+        
 	</div>
 </div>
+        <!-- <div id=\"memo-back\" style=\"position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2;background-color:rgba(0,0,0,0.3);\">
+        </div> -->
 
 </body>
 </html>

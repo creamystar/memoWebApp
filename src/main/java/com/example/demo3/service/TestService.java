@@ -17,9 +17,9 @@ public class TestService implements ITestService {
 	public TestMapper testMapper;
 
 	@Override
-	public List<HashMap<String, String>> getList() throws Throwable {
+	public List<HashMap<String, String>> getList(HashMap<String,String> params) throws Throwable {
 //		return iTestDao.getList();
-		return testMapper.getList();
+		return testMapper.getList(params);
 	}
 
 	@Override
@@ -39,8 +39,8 @@ public class TestService implements ITestService {
 	}
 
 	@Override
-	public HashMap<String, String> getOneList(int checkNo) throws Throwable {
-		return testMapper.getOneList(checkNo);
+	public List<HashMap<String,String>> getSearchList(HashMap<String, String> params) throws Throwable {
+		return testMapper.getSearchList(params);
 	}
 
 	@Override

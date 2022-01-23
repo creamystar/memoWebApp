@@ -4,31 +4,43 @@
 <mapper namespace="com.example.demo3.dao.TestMapper">
 
 	<!-- 조회 -->
-	<select id="getList" resultType="hashmap">
-		select * from "vueTest".memo_table order by wrt_dt desc
+	<select id="getList" parameterType="hashmap" resultType="hashmap">
+		select * from "vueTest".memo_table order by 
+		<!-- <choose>
+			<when test="order.equals('updtDt')">
+				updt_dt desc
+			</when>
+			<when test="order.equals('memo')">
+				cntnt
+			</when>
+			<otherwise>
+				wrt_dt desc
+			</otherwise>
+		</choose> -->
+				wrt_dt desc
 	</select>
 
 	<!-- 수정값 조회 -->
-	<select id="getOneList" parameterType="Integer" resultType="hashmap">
-		select * from "vueTest".memo_table where cntnt like #{searchWord} order by wrt_dt desc
+	<select id="getSearchList" parameterType="hashmap" resultType="hashmap">
+		select * from "vueTest".memo_table where cntnt like '%'||#{searchWord}||'%' order by wrt_dt desc
 	</select>
 
 	<!-- 삭제(del_yn -> 1) -->
 	<update id="delete" parameterType="hashmap">
-		delete from "vueTest".memo_table where wrt_dt = #{deleteWrtDt}
-		<!-- <foreach collection="list" item="item" open="(" close=")" separator=",">
-		 #{item}::integer
-		</foreach> -->
+		delete from "vueTest".memo_table where wrt_dt in 
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+		 #{item}
+		</foreach>
 	</update>
 	
 	<!-- 수정 -->
 	<update id="updateUser" parameterType="hashmap">
-		update "vueTest".memo_table set cntnt = #{updateWrtDt}, updt_dt = now() where wrt_dt = #{upateMemo}
+		update "vueTest".memo_table set cntnt = #{memoCon}, updt_dt = #{updtDt} where wrt_dt = #{wrtDt}
 	</update>
 	
 	<!-- 추가 -->
 	<insert id="insertUser" parameterType="hashmap">
-		insert into "vueTest".memo_table (wrt_dt,cntnt,updt_dt) values (now(),#{insertMemo},now())
+		insert into "vueTest".memo_table (wrt_dt,cntnt,updt_dt) values (#{wrtDt},#{memoCon},#{wrtDt})
 	</insert>
 
 </mapper>
