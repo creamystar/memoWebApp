@@ -6,7 +6,7 @@
 	<!-- 조회 -->
 	<select id="getList" parameterType="hashmap" resultType="hashmap">
 		select * from "vueTest".memo_table order by 
-		<!-- <choose>
+		 <choose>
 			<when test="order.equals('updtDt')">
 				updt_dt desc
 			</when>
@@ -16,22 +16,21 @@
 			<otherwise>
 				wrt_dt desc
 			</otherwise>
-		</choose> -->
-				wrt_dt desc
+		</choose> 
 	</select>
 
-	<!-- 수정값 조회 -->
+	<!-- 검색값 조회 -->
 	<select id="getSearchList" parameterType="hashmap" resultType="hashmap">
 		select * from "vueTest".memo_table where cntnt like '%'||#{searchWord}||'%' order by wrt_dt desc
 	</select>
 
-	<!-- 삭제(del_yn -> 1) -->
-	<update id="delete" parameterType="hashmap">
+	<!-- 삭제(다중삭제) -->
+	<delete id="delete" parameterType="hashmap">
 		delete from "vueTest".memo_table where wrt_dt in 
 		<foreach collection="list" item="item" open="(" close=")" separator=",">
 		 #{item}
 		</foreach>
-	</update>
+	</delete>
 	
 	<!-- 수정 -->
 	<update id="updateUser" parameterType="hashmap">
@@ -42,5 +41,31 @@
 	<insert id="insertUser" parameterType="hashmap">
 		insert into "vueTest".memo_table (wrt_dt,cntnt,updt_dt) values (#{wrtDt},#{memoCon},#{wrtDt})
 	</insert>
+	
+	<!-- 검색어 자동조회 리스트 조회 -->
+	<select id="getDatalist" parameterType="hashmap" resultType="hashmap">
+		select * from "vueTest".search_word_table order by search_word_date desc
+	</select>
+	
+	<!-- 동일한 검색어 개수 조회 -->
+	<select id="getSameSearchWordCnt" parameterType="hashmap" resultType="Integer">
+		select count(*) from (select * from "vueTest".search_word_table  where search_word = #{searchWord}) as a;
+	</select>
+	
+	<!-- 검색어 테이블에 검색어 n개 이상이면 update, 미만이면 insert 하는 구문 -->
+	<update id="putSearchWord" parameterType="hashmap">
+		with upsert as (update "vueTest".search_word_table 
+		set search_word = #{searchWord}, search_word_date = now() 
+		where search_word_date  = (select search_word_date  
+									from (select row_number() over(order by search_word_date) as search_row,* 
+											from "vueTest".search_word_table) as a 
+									where search_row = 1)
+		and (select count(*) >= #{limitN}::integer from "vueTest".search_word_table swt )
+							)
+		insert into "vueTest".search_word_table (search_word,search_word_date)
+				select #{searchWord},now()
+		where not exists (select * from (select count(*) from "vueTest".search_word_table swt ) as a where count >= #{limitN}::integer)
+	</update>
+
 
 </mapper>

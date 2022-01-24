@@ -14,298 +14,264 @@ $(document).on("click","#leftTypingGame",function(){
 })
 
 // memo 
-
-var textareaKeyUpFlag = false;
-var memoSelectDeleteFlag = false;
-var memoSelectDeleteWrtDT = [];
+var textareaKeyupFlag = false;
 var memoOrder = "";
-
+var deleteClickFlag = false;
+var memoSelectDeleteFlag = false;
 $(document).ready(function(){
 	getList(memoOrder);
+	getDatalist();
 })
-
-$(document).on("click",".memo-small",function(e){
-	if(memoSelectDeleteFlag){
+$(document).on("click",".memo-small", function(){
+	if(memoSelectDeleteFlag) return;
+	if(deleteClickFlag){
+		deleteClickFlag = false;
 		return;
 	}
-	
 	$(this).css("z-index","3")
-	var bh = "<div id=\"memo-back\" style=\"position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2;background-color:rgba(0,0,0,0.3);\"></div>"
-	if($("body").find("#memo-back").length == 0) $("body").append(bh);
+	var mh = "<div id=\"memo-back\" style=\"position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2;background-color:rgba(0,0,0,0.3);\"></div>"
+	if($("body").find("#memo-back").length == 0) $("body").append(mh)
 })
-
+$(document).on("keyup",".memo-textarea",function(e){
+	if(!textareaKeyupFlag) textareaKeyupFlag = true;
+})
 $(document).on("click","#memo-back",function(){
-	if(!textareaKeyUpFlag){
-		$("#memo-back").remove();
-		getList(memoOrder);
+	if(textareaKeyupFlag){
+		if(confirm("메모 변경내용이 사라집니다. 계속하시겠습니까?")){}
+		else return; 
 	}
-	
-	else if(confirm("작성한 메모 변경사항이 모두 사라집니다. 계속하시겠습니까?")){
-		$("#memo-back").remove();
-		getList(memoOrder);
-	}
-	
-	$(".memo-small").css("z-index","0");
-	textareaKeyUpFlag = false;
+	getList(memoOrder);
 })
-
-$(document).on("keyup",".memo-textarea",function(){
-	if(memoSelectDeleteFlag){
-		alert("다중선택 모드에서는 메모 변경이 불가합니다.");
-		return;
-	}
-	textareaKeyUpFlag = true;
-})
-
 $(document).on("click","#memo-insert",function(){
-	if(memoSelectDeleteFlag){
-		alert("다중선택 모드에서는 메모 변경이 불가합니다.");
-		return;
-	}
-	
-	if($(this).parent().next().children(".memo-textarea").val().length == 0){
-		alert("메모 내용을 기입 후 추가해주세요.")
-		return;
-	}
-	
-	createMemo($(this).parent().next().children(".memo-textarea").val());
-	
-})
-
-$(document).on("click", "#memo-update", function(){
-	if(memoSelectDeleteFlag){
-		alert("다중선택 모드에서는 메모 변경이 불가합니다.");
-		return;
-	}
-	
-	if(!textareaKeyUpFlag){
-		alert("메모에 수정된 부분이 없습니다.")
-		return;
-	}
-	
-	if(confirm("정말 수정하시겠습니까?")){
-		var memoCon = $(this).parent().next().children(".memo-textarea").val();
-		var wrtDt = $(this).prev().text()
-		console.log(memoCon)
-		console.log(wrtDt)
-		updateMemo(memoCon,wrtDt)
-	}
-})
-
-$(document).on("click", "#memo-delete", function(){
-	if(memoSelectDeleteFlag){
-		alert("다중선택 모드에서는 메모 변경이 불가합니다.");
-		return;
-	}
-	
-	if(confirm("정말 삭제하시겠습니까?")){
-		var wrtDt = [];
-		wrtDt.push($(this).prev().prev().text())
-		console.log(wrtDt)
-		deleteMemo(wrtDt)
-	}
-})
-
-$(document).on("keyup", "#memo-search-input", function(e){
-	if(e.key == "Enter" && $(this).val().length == 0) getList(memoOrder); 
-	if(e.key == "Enter" && $(this).val().length > 0){
-		searchList($(this).val())
-	}
-})
-
-$(document).on("click", "#memo-search", function(){
-	if(memoSelectDeleteFlag){
-		alert("다중선택 모드에서는 메모 변경이 불가합니다.");
-		return;
-	}
-	
-	if($("#memo-search-input").val().length == 0) getList(memoOrder);
-	if($("#memo-search-input").val().length > 0){
-		searchList($("#memo-search-input").val())
-	}
-})
-
-$(document).on("click", "#memo-select-delete", function(){
-	if(!memoSelectDeleteFlag){
-		alert("삭제할 메모를 선택후 다중삭제 버튼을 한번더 눌러주세요.")
-		// 다중선택모드 진입 
-		$(".memo-checkbox").show();
-		memoSelectDeleteFlag = !memoSelectDeleteFlag
+	if(textareaKeyupFlag){
+		insertMemo($(this).parent().next().children(".memo-textarea").val())
 	}else{
-		// 선택한사항 삭제
-		if(memoSelectDeleteWrtDT.length == 0){
-			alert("선택한 메모가 없습니다. 다중선택모드만 헤재합니다.")
-			deleteSelectMemoSuccess();
-			return;
-		}
-		if(confirm("선택한 메모를 모두 정말 삭제하시겠습니까?")){
-			deleteMemo(memoSelectDeleteWrtDT);
-		}
+		alert("메모변경사항이 없습니다.")
 	}
 })
-
-$(document).on("click",".memo-checkbox", function(){
-	if($(this).prop("checked")){
-		memoSelectDeleteWrtDT.push($(this).next().text())
-	}else{
-		memoSelectDeleteWrtDT.indexOf($(this).next().text())
-		memoSelectDeleteWrtDT.splice($(this).next().text(),1)
-	}
-})
-
-$(document).on("change","#memo-order", function(){
+$(document).on("change","#memo-order",function(){
 	memoOrder = $(this).val()
 	getList(memoOrder)
 })
+$(document).on("click","#memo-update",function(){
+	if(textareaKeyupFlag){
+		if(confirm("정말 수정하시겠습니까?")){
+			var memoCon = $(this).parent().next().children(".memo-textarea").val()
+			var wrtDt = $(this).prev().text()
+			updateMemo(memoCon,wrtDt)
+		}
+	}else{
+		alert("메모변경사항이 없습니다.")
+	}
+})
+$(document).on("click","#memo-delete",function(){
+	if(confirm("정말 삭제하시겠습니까?")){
+		var wrtDt = [];
+		wrtDt.push($(this).prev().prev().text())
+		deleteMemo(wrtDt)
+	}
+	deleteClickFlag = true;
+})
+$(document).on("keyup","#memo-search-input",function(e){
+	if(e.key == "Enter"){
+		if($("#memo-search-input").val()){
+			getSearchList($("#memo-search-input").val())
+		}else{
+			getList(memoOrder);
+		}
+	}
+})
+$(document).on("click","#memo-search",function(){
+	if($("#memo-search-input").val()){
+		getSearchList($("#memo-search-input").val())
+	}else{
+		getList(memoOrder);
+	}
+})
+$(document).on("click","#memo-select-delete",function(){
+	if(!memoSelectDeleteFlag){
+		// 다중선택 모드 시작 
+		$(".memo-checkbox").show();
+		alert("삭제할 메모를 선택 후 다시 다중삭제를 눌러 삭제해주세요.")		
+		memoSelectDeleteFlag = !memoSelectDeleteFlag;
+	}else{
+		if(checkboxWrtDt.length == 0){
+			alert("선택한 메모가 없습니다.")
+			getList(memoOrder)
+			memoSelectDeleteFlag = !memoSelectDeleteFlag;
+			return;
+		}
+		if(confirm("정말 삭제하시겠습니까?")){
+			deleteMemo(checkboxWrtDt)
+			memoSelectDeleteFlag = !memoSelectDeleteFlag;
+		}
+	}
+})
+var checkboxWrtDt = [];
+$(document).on("click",".memo-checkbox",function(){
+	if($(this).prop("checked")){
+		checkboxWrtDt.push($(this).next().text())	
+	}else{
+		var io = checkboxWrtDt.indexOf($(this).next().text())	
+		checkboxWrtDt.splice(io,1)	
+	}
+})
 
-function getList(order){
-	console.log(order)
+function getList(memoOrder){
 	$.ajax({
 		type: "get", 
 		url: "listAjax", 
 		dataType: "json", 
-		data: {order:order},
+		data: {order:memoOrder},
 		success: function(res){
 			if(res.result == "success"){
-				drawMemo(res.list)
+				drawMemo(res.list);
 			}else{
-				alert("메모를 조회하는데 오류가 발생했습니다. 다시 시도하거나 관리자에게 문의하세요.")
+				alert("메모조회에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
 			}
-		}, 
-		error: function(request,error){
-			console.log(request.responseJSON)
+		},
+		error: function(request, error){
+			alert("메모조회기능 호출에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
+			console.log(request.responseJSON);
 			console.log(error)
-			alert("메모조회 기능을 호출하는데에 오류가 발생했습니다. 다시 시도하거나 관리자에게 문의하세요.")
 		}
 	})
 }
 
 function drawMemo(list){
-	var lh = "";
-	lh += "<div class=\"memo-small memo-new\"><div><button id=\"memo-insert\">추가</button></div>";
-	lh += "<div class=\"memo-con\"><textarea class=\"memo-textarea\" placeholder=\"메모빠른입력\"></textarea></div></div>";
+	var mh = "";
+	mh += "<div class=\"memo-small\"><div><button tabindex=\"-1\" id=\"memo-insert\">추가</button></div><div class=\"memo-con\"><textarea tabindex=\"-1\" class=\"memo-textarea\" placeholder=\"메모빠른입력\"></textarea></div></div>"
 	
 	for(var i=0;i<list.length;i++){
-		lh += "<div class=\"memo-small\"><div><input type=\"checkbox\" class=\"memo-checkbox\"/>"
-		lh += "<div class=\"memo-wrtDt\">"
-		lh += list[i].wrt_dt
-		lh += "</div><button id=\"memo-update\">수정</button><button id=\"memo-delete\">삭제</button></div>"
-		lh += "<div class=\"memo-con\"><textarea class=\"memo-textarea\">"
-		lh += list[i].cntnt
-		lh += "</textarea></div></div>"
+		mh += "<div class=\"memo-small\"><div><input type=\"checkbox\" class=\"memo-checkbox\"/><div class=\"memo-wrtDt\">"
+		mh += list[i].wrt_dt
+		mh += "</div><button tabindex=\"-1\" id=\"memo-update\">수정</button><button tabindex=\"-1\" id=\"memo-delete\">삭제</button></div><div class=\"memo-con\"><textarea tabindex=\"-1\" class=\"memo-textarea\">"
+		mh += list[i].cntnt
+		mh += "</textarea></div></div>"
 	}
 	
-	$(".memo-right").html(lh);
+	$(".memo-right").html(mh);
 	
-	if($("body").find("#memo-back").length > 0) $("#memo-back").remove();	
-	textareaKeyUpFlag = false;
+	if($("body").find("#memo-back").length > 0) $("#memo-back").remove();
+	textareaKeyupFlag = false;
+	
 }
-
-function createMemo(memoCon){
-	var wrtDt = makeDt();
-	
+function insertMemo(memoCon){
+	var wrtDt = makeWrtDt();
 	$.ajax({
 		type: "post", 
 		url: "insertAjax", 
 		dataType: "json", 
-		data: {wrtDt: wrtDt, memoCon: memoCon}, 
+		data: {memoCon:memoCon,wrtDt:wrtDt},
 		success: function(res){
 			if(res.result == "success"){
-				getList(memoOrder);
+				getList(memoOrder)
 			}else{
-				alert("메모를 추가하는데 오류가 발생했습니다. 다시 시도하거나 관리자에게 문의하세요.")
+				alert("메모추가에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
 			}
-		}, 
-		error: function(request,error){
-			console.log(request.responseJSON)
+		},
+		error: function(request, error){
+			alert("메모추가기능 호출에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
+			console.log(request.responseJSON);
 			console.log(error)
-			alert("메모추가 기능을 호출하는데에 오류가 발생했습니다. 다시 시도하거나 관리자에게 문의하세요.")
 		}
 	})
 }
-
 function updateMemo(memoCon,wrtDt){
-	var updtDt = makeDt();
-	
+	var updtDt = makeWrtDt();
 	$.ajax({
 		type: "put", 
 		url: "updateAjax", 
 		dataType: "json", 
-		data: {wrtDt: wrtDt, memoCon: memoCon, updtDt: updtDt}, 
+		data: {memoCon:memoCon,wrtDt:wrtDt,updtDt:updtDt},
 		success: function(res){
 			if(res.result == "success"){
-				getList(memoOrder);
+				getList(memoOrder)
 			}else{
-				alert("메모를 수정하는데 오류가 발생했습니다. 다시 시도하거나 관리자에게 문의하세요.")
+				alert("메모수정에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
 			}
-		}, 
-		error: function(request,error){
-			console.log(request.responseJSON)
+		},
+		error: function(request, error){
+			alert("메모수정기능 호출에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
+			console.log(request.responseJSON);
 			console.log(error)
-			alert("메모수정 기능을 호출하는데에 오류가 발생했습니다. 다시 시도하거나 관리자에게 문의하세요.")
 		}
 	})
 }
-
-function deleteMemo(wrtDtArray){
-	console.log("deleteMemo")
-	console.log(wrtDtArray)
+function deleteMemo(wrtDt){
 	$.ajax({
 		type: "post", 
 		url: "deleteAjax", 
 		dataType: "json", 
-		data: {wrtDt: wrtDtArray}, 
+		data: {wrtDt:wrtDt},
 		success: function(res){
 			if(res.result == "success"){
-				getList(memoOrder);
-				deleteSelectMemoSuccess();
+				getList(memoOrder)
+				alert("삭제되었습니다.")
 			}else{
-				alert("메모를 삭제하는데 오류가 발생했습니다. 다시 시도하거나 관리자에게 문의하세요.")
+				alert("메모삭제에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
 			}
-		}, 
-		error: function(request,error){
-			console.log(request.responseJSON)
+		},
+		error: function(request, error){
+			alert("메모삭제기능 호출에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
+			console.log(request.responseJSON);
 			console.log(error)
-			alert("메모삭제 기능을 호출하는데에 오류가 발생했습니다. 다시 시도하거나 관리자에게 문의하세요.")
 		}
 	})
 }
-
-function deleteSelectMemoSuccess(){
-	if(memoSelectDeleteFlag){
-		// 다중삭제 성공시 다중선택모드 해제 
-		$(".memo-checkbox").hide();
-		memoSelectDeleteFlag = !memoSelectDeleteFlag;
-		memoSelectDeleteWrtDT = [];
-	}
-}
-
-function searchList(searchWord){
-	console.log("searchList")
-	console.log(searchWord)
+function getSearchList(searchWord){
 	$.ajax({
 		type: "get", 
 		url: "searchListAjax", 
 		dataType: "json", 
-		data: {searchWord: searchWord}, 
+		data: {searchWord:searchWord},
 		success: function(res){
 			if(res.result == "success"){
-				drawMemo(res.list);
+				drawMemo(res.list)
+				getDatalist()
 			}else{
-				alert("메모를 검색하는데 오류가 발생했습니다. 다시 시도하거나 관리자에게 문의하세요.")
+				alert("메모검색조회에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
 			}
-		}, 
-		error: function(request,error){
-			console.log(request.responseJSON)
+		},
+		error: function(request, error){
+			alert("메모검색조회기능 호출에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
+			console.log(request.responseJSON);
 			console.log(error)
-			alert("메모검색 기능을 호출하는데에 오류가 발생했습니다. 다시 시도하거나 관리자에게 문의하세요.")
 		}
 	})
 }
-
-function makeDt(){
+function getDatalist(){
+	$.ajax({
+		type: "get", 
+		url: "getDatalistAjax", 
+		dataType: "json", 
+		data: {},
+		success: function(res){
+			if(res.result == "success"){
+				var dlh = "";
+				for(var i=0;i<res.list.length;i++){
+					dlh += "<option>"
+					dlh += res.list[i].search_word
+					dlh += "</option>"
+				}
+				$("#search-options").html(dlh)
+			}else{
+				alert("메모자동완성 리스트조회에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
+			}
+		},
+		error: function(request, error){
+			alert("메모자동완성 리스트조회기능 호출에 실패하였습니다. 다시 시도하거나 관리자에게 문의하세요.")
+			console.log(request.responseJSON);
+			console.log(error)
+		}
+	})
+}
+function makeWrtDt(){
 	var d = new Date();
 	var dt = d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).substr(-2) + "-" + ("0" + d.getDate()).substr(-2) + " " + ("0" + d.getHours()).substr(-2) + ":" + ("0" + d.getMinutes()).substr(-2) + ":" + ("0" + d.getSeconds()).substr(-2);
 	return dt;
 }
+
+
+
 

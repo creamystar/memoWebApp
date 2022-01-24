@@ -24,5 +24,11 @@ public interface ITestService {
 
 	public List<HashMap<String, String>> getPagingList2(HashMap<String, String> params) throws Throwable ;
 
+	public void putSearchWord(HashMap<String, String> params) throws Throwable;
+
+	public int getSameSearchWordCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getDatalist() throws Throwable;
+
 
 }

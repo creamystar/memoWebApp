@@ -63,6 +63,21 @@ public class TestController {
 		}
 		return mapper.writeValueAsString(modelMap);
 	}
+	@RequestMapping(value="/getDatalistAjax", method = RequestMethod.GET,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String getDatalistAjax(@RequestParam HashMap<String,String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		try {
+			List<HashMap<String,String>> list = iTestService.getDatalist();
+			modelMap.put("list",list);
+			modelMap.put("result", "success");
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("result", "exception");
+		}
+		return mapper.writeValueAsString(modelMap);
+	}
 	
 
 	@RequestMapping(value="/deleteAjax", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
@@ -100,10 +115,13 @@ public class TestController {
 	public String getOneUserInfoAjax(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-//		System.out.println("********************");
-//		System.out.println(params);
 		try {
 			List<HashMap<String,String>> list = iTestService.getSearchList(params);
+			int sameWordCnt = iTestService.getSameSearchWordCnt(params);
+			if(sameWordCnt == 0) {
+				params.put("limitN", "5");
+				iTestService.putSearchWord(params);
+			}
 			modelMap.put("list", list);
 			modelMap.put("result", "success");
 		} catch (Throwable e) {

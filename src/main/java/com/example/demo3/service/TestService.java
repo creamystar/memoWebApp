@@ -64,4 +64,19 @@ public class TestService implements ITestService {
 		return testMapper.getPagingList2(params);
 	}
 
+	@Override
+	public void putSearchWord(HashMap<String, String> params) throws Throwable {
+		testMapper.putSearchWord(params);
+	}
+
+	@Override
+	public int getSameSearchWordCnt(HashMap<String, String> params) throws Throwable {
+		return testMapper.getSameSearchWordCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getDatalist() throws Throwable {
+		return testMapper.getDatalist();
+	}
+
 }
